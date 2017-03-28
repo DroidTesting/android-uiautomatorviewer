@@ -1,0 +1,45 @@
+group 'cn.lovexiaov.android.tools'
+version '1.0'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+}
+
+
+sourceSets {
+  main.resources.srcDir 'src/main/java'
+}
+
+dependencies {
+  compile fileTree(include: ['*.jar'], dir: 'libs')
+}
+task copyJars(type: Copy) {
+  from configurations.runtime
+  into 'build/libs/lib'
+}
+
+task copyEtcs(type: Copy) {
+  from "$projectDir/etc"
+  into "build/libs"
+}
+
+task generateJar(type: Jar, dependsOn: [copyJars, copyEtcs, jar]) {
+  manifest {
+    attributes('Implementation-Title': 'Gradle',
+            'Implementation-Version': version,
+            'Created-By': 'lovexiaov',
+            'Main-Class': 'com.android.uiautomator.UiAutomatorViewer',
+            'Class-Path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
+    )
+  }
+  into('') {
+    from "$buildDir/classes/main"
+  }
+  into('') {
+    from "$buildDir/resources/main"
+  }
+}
