@@ -37,9 +37,17 @@ import java.io.File;
 
 public class UiAutomatorViewer extends ApplicationWindow {
   private UiAutomatorView mUiAutomatorView;
+  private static UiAutomatorViewer uViewerInstance = null;
 
   public UiAutomatorViewer() {
     super(null);
+  }
+
+  public synchronized static UiAutomatorViewer getInstance() {
+    if (uViewerInstance == null) {
+      uViewerInstance = new UiAutomatorViewer();
+    }
+    return uViewerInstance;
   }
 
   @Override
@@ -74,7 +82,7 @@ public class UiAutomatorViewer extends ApplicationWindow {
     DebugBridge.init();
 
     try {
-      UiAutomatorViewer window = new UiAutomatorViewer();
+      UiAutomatorViewer window = getInstance();
       window.setBlockOnOpen(true);
       window.open();
     } catch (Exception e) {
