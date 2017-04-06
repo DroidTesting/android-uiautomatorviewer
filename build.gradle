@@ -7,6 +7,7 @@ sourceCompatibility = 1.8
 
 repositories {
   mavenCentral()
+  jcenter()
 }
 
 
@@ -27,11 +28,17 @@ task copyEtcs(type: Copy) {
   into "build/libs"
 }
 
-task generateJar(type: Jar, dependsOn: [copyJars, copyEtcs, jar]) {
+task clearProject(type: Delete, dependsOn: [clean]) {
+  delete("out")
+}
+
+task generateJar(type: Jar, dependsOn: [clearProject, copyJars, copyEtcs, jar]) {
   manifest {
-    attributes('Implementation-Title': 'Gradle',
+    attributes(
+            'Implementation-Title': 'Gradle',
             'Implementation-Version': version,
             'Created-By': 'lovexiaov',
+            'Manifest-Version': '1.0',
             'Main-Class': 'com.android.uiautomator.UiAutomatorViewer',
             'Class-Path': configurations.compile.collect { 'lib/' + it.getName() }.join(' ')
     )
