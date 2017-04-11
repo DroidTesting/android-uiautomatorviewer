@@ -12,7 +12,8 @@ repositories {
 
 
 sourceSets {
-  main.resources.srcDir 'src/main/java'
+  main.java.srcDirs 'src/java'
+  main.resources.srcDir 'src/resources'
 }
 
 dependencies {
